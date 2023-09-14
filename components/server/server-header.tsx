@@ -9,7 +9,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuContent,
     DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import { ChevronDown, UserPlus, Settings, Users, PlusCircle, Trash, LogOut } from "lucide-react";
 
 interface ServerHeaderProps {
