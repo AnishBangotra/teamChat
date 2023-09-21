@@ -124,7 +124,6 @@ const ChatMessages = ({
                                 <ChatItem 
                                     key={message.id}
                                     id={message.id}
-                                    mode={type}
                                     currentMember={member}
                                     member={message.member}
                                     content={message.content}

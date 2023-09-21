@@ -6,14 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Member, MemberRole, Profile } from "@prisma/client";
 import UserAvatar from "../user-avatar";
 import { ActionTooltip } from "../action-tooltip";
-import { ShieldCheck, ShieldAlert, FileIcon, Edit, Trash } from "lucide-react";
+import { ShieldCheck, ShieldAlert, FileIcon, Trash } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useRouter, useParams } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
-import { channel } from "diagnostics_channel";
-
 
 interface ChatItemProps {
     id: string;
@@ -21,7 +19,6 @@ interface ChatItemProps {
     member: Member & {
         profile: Profile;
     };
-    mode: string;
     timestamp: string;
     fileUrl: string | null;
     deleted: boolean;
@@ -45,7 +42,6 @@ export const ChatItem = ({
     id,
     content,
     member,
-    mode,
     timestamp,
     fileUrl,
     deleted,
@@ -55,7 +51,7 @@ export const ChatItem = ({
     socketQuery
 }: ChatItemProps) => {
     const [isEditing, setIsEditing] = useState(false);
-    const { onOpen, type } = useModal();
+    const { onOpen } = useModal();
     const params = useParams();
     const router = useRouter();
 
@@ -86,7 +82,6 @@ export const ChatItem = ({
     const isModerator = currentMember.role === MemberRole.MODERATOR;
     const isOwner = currentMember.role === member.id;
     const canDeleteMessage = !deleted && (isAdmin || isModerator || isOwner);
-    const directMessageDelete = mode === "conversation" && (isAdmin || isModerator || isOwner);
     const isPDF = fileType === "pdf" && fileUrl;
     const isImage = !isPDF && fileUrl;
 
@@ -187,7 +182,7 @@ export const ChatItem = ({
                     )} */}
                 </div>
             </div>
-            {!directMessageDelete && canDeleteMessage && (
+            {canDeleteMessage && (
                 <div className="hidden group-hover:flex items-center gap-x-2
                 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border
                 rounded-sm">
